@@ -1,13 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import AlertTemplate from "react-alert-template-basic";
-import { Provider as AlertProvider } from "react-alert";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import App from "./App";
+import './index.css';
+import App from './components/App';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <AlertProvider template={AlertTemplate}>
+ReactDOM.render(
+  <React.StrictMode>
     <App />
-  </AlertProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
