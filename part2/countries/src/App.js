@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+let prev = "";
 
 function App() {
   const [countries, setCountriesObj] = useState({});
@@ -30,13 +31,17 @@ function App() {
           });
         }
 
-        console.log(res_arr);
+        // console.log(res_arr);
         setResult(
-          <ul>
+          <ul className="countryList">
             {res_arr.map((e) => (
-              <li key={e.id}>
+              <li className="country" key={e.id}>
                 {e.name}{" "}
-                <button value={e.name} onClick={handleClick}>
+                <button
+                  className="country-btn"
+                  value={e.name}
+                  onClick={handleClick}
+                >
                   Show
                 </button>{" "}
               </li>
@@ -46,7 +51,9 @@ function App() {
       }
 
       if (display.length > 10 && display.length < 200) {
-        setResult(<p>Too many results be more specific 😊</p>);
+        setResult(
+          <p className="banner-flag">Too many results be more specific 😊</p>
+        );
       }
 
       if (display.length === 1) {
@@ -64,55 +71,68 @@ function App() {
         let lon = display[0].capitalInfo.latlng[1];
 
         let getWeather = () => {
-          axios
-            .get(
-              "https://api.openweathermap.org/data/2.5/weather?lat=" +
-                lat +
-                "&lon=" +
-                lon +
-                "&appid=" +
-                process.env.REACT_APP_API_KEY +
-                "&units=metric"
-            )
-            .then((res) => {
-              console.log(
-                res.data.main.temp,
-                res.data.wind.speed,
-                res.data.name
-              );
-              let src_img =
-                "http://openweathermap.org/img/wn/" +
-                res.data.weather[0].icon +
-                "@2x.png";
-              setWeather(
-                <div>
-                  <p>
-                    temperature : <b> {res.data.main.temp}</b> Celcius
-                  </p>
-                  <img src={src_img} alt="weather in delhi" />
-                  <p>
-                    wind : <b>{res.data.wind.speed}</b> m/s
-                  </p>
-                </div>
-              );
-            })
-            .catch((err) => console.log(err));
+          if (prev === "" || prev !== C_name) {
+            console.log("request sent");
+            axios
+              .get(
+                "https://api.openweathermap.org/data/2.5/weather?lat=" +
+                  lat +
+                  "&lon=" +
+                  lon +
+                  "&appid=" +
+                  process.env.REACT_APP_API_KEY +
+                  "&units=metric"
+              )
+              .then((res) => {
+                prev = C_name;
+                // console.log(
+                //   res.data.main.temp,
+                //   res.data.wind.speed,
+                //   res.data.name
+                // );
+                let src_img =
+                  "http://openweathermap.org/img/wn/" +
+                  res.data.weather[0].icon +
+                  "@2x.png";
+                setWeather(
+                  <div className="weather-container">
+                    <p className="temp">
+                      temperature : <b> {res.data.main.temp}</b> Celcius
+                    </p>
+                    <img
+                      className="weather-img"
+                      src={src_img}
+                      alt="weather in delhi"
+                    />
+                    <p className="wind">
+                      wind : <b>{res.data.wind.speed}</b> m/s
+                    </p>
+                  </div>
+                );
+              })
+              .catch((err) => console.log(err));
+          }
         };
-
         setResult(
-          <div>
-            <h1>{C_name}</h1>
-            <p>capital :{C_capital}</p>
-            <p>area : {C_area}</p>
-            <h4>LANGUAGES:</h4>
-            <ul>
+          <div className="country-container">
+            <h1 className="country-Name">{C_name}</h1>
+            <p className="country-capital">Capital : {C_capital}</p>
+            <p className="country-area">Area : {C_area} km²</p>
+            <h4 className="languag-heading">LANGUAGES:</h4>
+            <ul className="language-list">
               {lang_arr.map((l) => (
-                <li key={l}>{l}</li>
+                <li className="lang-name" key={l}>
+                  {l}
+                </li>
               ))}
             </ul>
-            <h4>FLAG</h4>
-            <img src={image_url} alt="flag of this country" />
-            <h4>Weather in Capital</h4>
+            <h4 className="flag-heading">COUNTRY FLAG</h4>
+            <img
+              className="flag-image"
+              src={image_url}
+              alt="flag of this country"
+            />
+            <h4 className="weather-cap-heading">Weather in Capital</h4>
             {getWeather()}
             {weather}
           </div>
@@ -130,18 +150,18 @@ function App() {
       <header className="App-header">
         <h1>Countries</h1>
       </header>
-
-      <p>
-        find countries{" "}
+      <div className="search-container">
+        <p className="search-bar">Find your Country 😊 </p>
         <input
+          className="search-input"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           id="search"
         />
-      </p>
+      </div>
 
-      <div>{result}</div>
+      <div className="result-container">{result}</div>
     </div>
   );
 }
