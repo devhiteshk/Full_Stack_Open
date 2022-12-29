@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-
+var morgan = require("morgan");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -60,9 +60,14 @@ app.delete("/api/persons/:id", (req, res) => {
   }
 });
 
+
+morgan.token("body", (req, res) => JSON.stringify(req.body));
+
+morgan(':method :url :status - :body :response-time ms - :res[content-length]')
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body '));
+
 app.post("/api", (req, res) => {
   let newId = Math.floor(Math.random(100000) * 100000);
-
   let newObj = {};
   newObj["id"] = newId;
   newObj["name"] = req.body.name;
