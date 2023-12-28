@@ -7,4 +7,4 @@ This the repository for my solution to the exercises of full stack open by Unive
 
 ## Completion Certificate
 
-(https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/4f2480478456f7a671715f255353229a)[certificate link]
+[Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/4f2480478456f7a671715f255353229a)
